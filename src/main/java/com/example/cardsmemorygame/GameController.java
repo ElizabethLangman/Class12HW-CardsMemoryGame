@@ -55,6 +55,8 @@ public class GameController {
         return root;
     }
 
+    // this comment is for GitHub
+
     // ----------------- Board Setup -----------------
     private void setupBoard(int rows, int cols) {
         grid.setHgap(10);
