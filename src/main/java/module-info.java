@@ -4,7 +4,7 @@ module com.example.cardsmemorygame {
 
     requires org.controlsfx.controls;
     requires org.kordamp.ikonli.javafx;
-    requires com.almasb.fxgl.all;
+    requires java.desktop;
 
     opens com.example.cardsmemorygame to javafx.fxml;
     exports com.example.cardsmemorygame;

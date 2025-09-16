@@ -1,8 +1,8 @@
 package com.example.cardsmemorygame;
 
 public class Card {
-    private final String name;   // e.g. "2_of_hearts"
-    private final String imagePath; // e.g. "/com/example/cardsmemorygame/cards/2_of_hearts.png"
+    private final String name;
+    private final String imagePath;
     private boolean matched = false;
 
     public Card(String name, String imageFile) {

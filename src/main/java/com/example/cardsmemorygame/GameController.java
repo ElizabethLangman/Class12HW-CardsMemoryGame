@@ -2,6 +2,7 @@ package com.example.cardsmemorygame;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -11,6 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,9 +24,9 @@ public class GameController {
     private final Label timerLabel;
 
     private final List<CardButton> buttons = new ArrayList<>();
+
     private CardButton firstSelected = null;
     private CardButton secondSelected = null;
-
     private int pairsFound = 0;
     private int totalPairs;
 
@@ -38,10 +40,9 @@ public class GameController {
         this.stage = stage;
         this.rows = rows;
         this.cols = cols;
-
-        root = new BorderPane();
-        grid = new GridPane();
-        timerLabel = new Label("00:00.000");
+        this.root = new BorderPane();
+        this.grid = new GridPane();
+        this.timerLabel = new Label("00:00.000");
 
         setupBoard(rows, cols);
         setupTimer();
@@ -55,32 +56,50 @@ public class GameController {
         return root;
     }
 
-    // testing commit and push from Fork
-
-    //more changes
-
     // ----------------- Board Setup -----------------
     private void setupBoard(int rows, int cols) {
         grid.setHgap(10);
         grid.setVgap(10);
+        grid.setAlignment(Pos.CENTER);
 
-        totalPairs = (rows * cols) / 2;
-        List<Card> cards = generateCards(totalPairs);
+        List<Card> cards = generateCards((rows * cols) / 2);
         Collections.shuffle(cards);
 
         int index = 0;
+        double cardWidth = 600.0 / cols;
+        double cardHeight = 400.0 / rows;
+
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
-                Card card = cards.get(index);
-                CardButton btn = new CardButton(card);
-
+                CardButton btn = new CardButton(cards.get(index));
                 btn.setOnAction(e -> handleCardClick(btn));
+
+                btn.setPrefSize(cardWidth, cardHeight);
+                btn.getFrontView().setFitWidth(cardWidth);
+                btn.getFrontView().setFitHeight(cardHeight);
+                btn.getBackView().setFitWidth(cardWidth);
+                btn.getBackView().setFitHeight(cardHeight);
 
                 buttons.add(btn);
                 grid.add(btn, c, r);
                 index++;
             }
         }
+
+        root.setCenter(grid);
+
+        // Show all cards for 10 seconds, then hide
+        for (CardButton btn : buttons) {
+            btn.reveal();
+        }
+
+        Timeline delay = new Timeline(new KeyFrame(Duration.seconds(10), e -> {
+            for (CardButton btn : buttons) {
+                btn.hide();
+            }
+        }));
+        delay.setCycleCount(1);
+        delay.play();
     }
 
     private List<Card> generateCards(int pairs) {

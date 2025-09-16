@@ -52,4 +52,12 @@ public class CardButton extends Button {
     public Card getCard() {
         return card;
     }
+
+    public ImageView getFrontView() {
+        return frontView;
+    }
+
+    public ImageView getBackView() {
+        return backView;
+    }
 }
