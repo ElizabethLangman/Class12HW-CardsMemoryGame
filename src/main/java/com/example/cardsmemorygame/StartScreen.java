@@ -6,6 +6,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -27,6 +29,10 @@ public class StartScreen {
     }
 
     private void setupUI() {
+        Image logoImg = new Image(getClass().getResource("/com/example/cardsmemorygame/logo.jpeg").toExternalForm());
+        ImageView logoView = new ImageView(logoImg);
+        logoView.setFitWidth(200);
+        logoView.setPreserveRatio(true);
         Text title = new Text("New Game");
         title.setFont(Font.font("Times New Roman", 32));
         BorderPane.setAlignment(title, Pos.CENTER);
@@ -37,6 +43,7 @@ public class StartScreen {
         ToggleButton mediumBtn = new ToggleButton("Medium (4x6)");
         ToggleButton hardBtn = new ToggleButton("Hard (6x8)");
 
+        // check this one
         easyBtn.setMinWidth(120);
         mediumBtn.setMinWidth(120);
         hardBtn.setMinWidth(120);

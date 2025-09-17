@@ -62,6 +62,8 @@ public class GameController {
         grid.setVgap(10);
         grid.setAlignment(Pos.CENTER);
 
+        totalPairs = (rows * cols)/2;
+
         List<Card> cards = generateCards((rows * cols) / 2);
         Collections.shuffle(cards);
 
@@ -93,7 +95,7 @@ public class GameController {
             btn.reveal();
         }
 
-        Timeline delay = new Timeline(new KeyFrame(Duration.seconds(10), e -> {
+        Timeline delay = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
             for (CardButton btn : buttons) {
                 btn.hide();
             }
@@ -103,30 +105,10 @@ public class GameController {
     }
 
     private List<Card> generateCards(int pairs) {
-        // Load *all* card files from resources
-        String path = "/com/example/cardsmemorygame/cards/";
-        var resource = getClass().getResource(path);
-        if (resource == null) {
-            throw new RuntimeException("Card folder not found in resources!");
-        }
-
-        // pool of available card images (must exist in resources/cards/)
-        String[] allCards = {
-                "2_of_hearts.jpeg", "2_of_spades.jpeg",
-                "3_of_hearts.jpeg", "3_of_spades.jpeg",
-                "Q_of_clubs.jpeg", "Q_of_diamonds.jpeg",
-                "K_of_hearts.jpeg", "K_of_spades.jpeg",
-                "A_of_spades.jpeg", "A_of_hearts.jpeg",
-                "J_of_diamonds.jpeg", "J_of_clubs.jpeg"
-        };
-
-        // Shuffle and pick "pairs" number of unique cards
-        List<String> deck = new ArrayList<>(List.of(allCards));
-        Collections.shuffle(deck);
+        List<String> deck = CardLoader.getRandomCards(pairs);
 
         List<Card> cards = new ArrayList<>();
-        for (int i = 0; i < pairs; i++) {
-            String file = deck.get(i);
+        for (String file : deck) {
             String name = file.substring(0, file.indexOf(".jpeg"));
             cards.add(new Card(name, file));
             cards.add(new Card(name, file)); // duplicate for pair
@@ -179,9 +161,7 @@ public class GameController {
             secondSelected = null;
             pairsFound++;
 
-            if (pairsFound == totalPairs) {
-                endGame();
-            }
+            if (pairsFound == totalPairs) { endGame(); }
         } else {
             // ❌ no match → flip back after delay
             Timeline delay = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
