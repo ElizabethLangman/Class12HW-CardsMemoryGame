@@ -10,10 +10,11 @@ public class CardLoader {
     // Reads all filenames from cards.txt in resources
     public static List<String> loadCardFilenames() {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(
-                CardLoader.class.getResourceAsStream("/com/example/cardsmemorygame/cards/cards.txt")))) {
+                CardLoader.class.getResourceAsStream("/com/example/cardsmemorygame/cards/cardsName.txt")))) {
             return reader.lines().filter(line -> !line.isBlank()).collect(Collectors.toList());
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("Error loading card filenames");
+            e.printStackTrace(System.err);
             return new ArrayList<>();
         }
     }
