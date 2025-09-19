@@ -116,14 +116,14 @@ public class GameController {
         if (difficulty.equals("SKZ")) {
 
             Map<String, String> albumToMusic = Map.of(
-                    "SKZ_ATE.png", "/com/example/cardsmemorygame/albums/music/SO_GOOD.mp3", // missing
+                    "SKZ_ATE.png", "/com/example/cardsmemorygame/albums/music/CHK_CHK_BOOM.mp3",
                     "SKZ_CEREMONY.png", "/com/example/cardsmemorygame/albums/music/CEREMONY.mp3",
-                    "SKZ_HOLLOW.png", "/com/example/cardsmemorygame/albums/music/UNFAIR.mp3", //missing
-                    "SKZ_HOP.png", "/com/example/cardsmemorygame/albums/music/BOUNCE_BACK.mp3", //missing
+                    "SKZ_HOLLOW.png", "/com/example/cardsmemorygame/albums/music/HOLLOW.mp3",
+                    "SKZ_HOP.png", "/com/example/cardsmemorygame/albums/music/WALKING_ON_WATER.mp3",
                     "SKZ_IN_LIFE.png", "/com/example/cardsmemorygame/albums/music/BACK_DOOR.mp3",
                     "SKZ_KARMA.png", "/com/example/cardsmemorygame/albums/music/BLEEP.mp3",
                     "SKZ_MAXIDENT.png", "/com/example/cardsmemorygame/albums/music/CIRCUS.mp3",
-                    "SKZ_REPLAY.png", "/com/example/cardsmemorygame/albums/music/MAKNAE_ON_TOP.mp3" //missing
+                    "SKZ_REPLAY.png", "/com/example/cardsmemorygame/albums/music/MAKNAE_ON_TOP.mp3"
             );
 
             for (String file : albumToMusic.keySet()) {
