@@ -9,7 +9,7 @@ public class MemoryMatchApplication extends Application {
     @Override
     public void start(Stage primaryStage) {
         StartScreen startScreen = new StartScreen(primaryStage);
-        Scene scene = new Scene(startScreen.getRoot(), 1000, 400);
+        Scene scene = new Scene(startScreen.getRoot(), 600, 400);
 
         primaryStage.setTitle("Memory Card Game");
         primaryStage.setScene(scene);
