@@ -3,6 +3,7 @@ package com.example.cardsmemorygame;
 public class Card {
     private final String name;
     private final String imagePath;
+    private String musicPath;
     private boolean matched = false;
 
     public Card(String name, String imageFile) {
@@ -10,19 +11,21 @@ public class Card {
         this.imagePath = "/com/example/cardsmemorygame/cards/" + imageFile;
     }
 
-    public String getName() {
-        return name;
+    public Card(String name, String imageFile, String musicPath) {
+        this.name = name;
+        this.imagePath = "/com/example/cardsmemorygame/cards/" + imageFile;
+        this.musicPath = musicPath;
     }
 
-    public String getImagePath() {
-        return imagePath;
-    }
+    public String getName() { return name; }
 
-    public boolean isMatched() {
-        return matched;
-    }
+    public String getImagePath() { return imagePath; }
 
-    public void setMatched(boolean matched) {
-        this.matched = matched;
-    }
+    public boolean isMatched() { return matched; }
+
+    public void setMatched(boolean matched) { this.matched = matched; }
+
+    public String getMusicPath() { return musicPath; }
+
+    public void setMusicPath(String musicPath) { this.musicPath = musicPath; }
 }

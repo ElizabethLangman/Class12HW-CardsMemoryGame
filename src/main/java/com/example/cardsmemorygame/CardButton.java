@@ -16,7 +16,11 @@ public class CardButton extends Button {
         this.card = card;
 
         // Load images
-        backImage = new Image(getClass().getResource("/com/example/cardsmemorygame/cards/back.jpeg").toExternalForm());
+        if (card.getName().startsWith("SKZ_")){
+            backImage = new Image(getClass().getResource("/com/example/cardsmemorygame/albums/SKZ_back.png").toExternalForm());
+        } else {
+            backImage = new Image(getClass().getResource("/com/example/cardsmemorygame/cards/back.jpeg").toExternalForm());
+        }
         frontImage = new Image(getClass().getResource(card.getImagePath()).toExternalForm());
 
         // Create ImageViews with scaling

@@ -18,9 +18,10 @@ public class GameBoard {
             case "Easy" -> { rows = 3; cols = 4; }
             case "Medium" -> { rows = 4; cols = 6; }
             case "Hard" -> { rows = 6; cols = 8; }
+            case "SKZ" -> { rows = 4; cols = 4; }
         }
 
-        GameController controller = new GameController(rows, cols, stage);
+        GameController controller = new GameController(rows, cols, difficulty, stage);
         root = controller.getRoot();
     }
 

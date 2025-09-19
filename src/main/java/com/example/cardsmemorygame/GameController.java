@@ -9,6 +9,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -16,6 +18,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class GameController {
     private final Stage stage;
@@ -35,11 +38,13 @@ public class GameController {
 
     private final int rows;
     private final int cols;
+    private final String difficulty;
 
-    public GameController(int rows, int cols, Stage stage) {
+    public GameController(int rows, int cols, String difficulty, Stage stage) {
         this.stage = stage;
         this.rows = rows;
         this.cols = cols;
+        this.difficulty = difficulty;
         this.root = new BorderPane();
         this.grid = new GridPane();
         this.timerLabel = new Label("00:00.000");
@@ -90,28 +95,52 @@ public class GameController {
 
         root.setCenter(grid);
 
-        // Show all cards for 10 seconds, then hide
+        // Show all cards for 5 seconds, then hide
         for (CardButton btn : buttons) {
             btn.reveal();
         }
 
         Timeline delay = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
-            for (CardButton btn : buttons) {
-                btn.hide();
-            }
+            for (CardButton btn : buttons) { btn.hide(); }
+            elapsedTime = 0; // reset timer
+            timerLabel.setText("00:00.00");
+            timer.playFromStart();
         }));
         delay.setCycleCount(1);
         delay.play();
     }
 
     private List<Card> generateCards(int pairs) {
-        List<String> deck = CardLoader.getRandomCards(pairs);
-
         List<Card> cards = new ArrayList<>();
-        for (String file : deck) {
-            String name = file.substring(0, file.indexOf(".jpeg"));
-            cards.add(new Card(name, file));
-            cards.add(new Card(name, file)); // duplicate for pair
+
+        if (difficulty.equals("SKZ")) {
+
+            Map<String, String> albumToMusic = Map.of(
+                    "SKZ_ATE.png", "/com/example/cardsmemorygame/albums/music/SO_GOOD.mp3", // missing
+                    "SKZ_CEREMONY.png", "/com/example/cardsmemorygame/albums/music/CEREMONY.mp3",
+                    "SKZ_HOLLOW.png", "/com/example/cardsmemorygame/albums/music/UNFAIR.mp3", //missing
+                    "SKZ_HOP.png", "/com/example/cardsmemorygame/albums/music/BOUNCE_BACK.mp3", //missing
+                    "SKZ_IN_LIFE.png", "/com/example/cardsmemorygame/albums/music/BACK_DOOR.mp3",
+                    "SKZ_KARMA.png", "/com/example/cardsmemorygame/albums/music/BLEEP.mp3",
+                    "SKZ_MAXIDENT.png", "/com/example/cardsmemorygame/albums/music/CIRCUS.mp3",
+                    "SKZ_REPLAY.png", "/com/example/cardsmemorygame/albums/music/MAKNAE_ON_TOP.mp3" //missing
+            );
+
+            for (String file : albumToMusic.keySet()) {
+                String name = file.substring(0, file.indexOf(".jpg"));
+                Card albumCard = new Card(name, "/com/example/cardsmemorygame/albums/" + file);
+                albumCard.setMusicPath(albumToMusic.get(file));
+
+                cards.add(albumCard);
+                cards.add(new Card(name, "/com/example/cardsmemorygame/albums/" + file, albumToMusic.get(file)));  // duplicate for pair
+            }
+        } else {
+            List<String> deck = CardLoader.getRandomCards(pairs);
+            for (String file : deck) {
+                String name = file.substring(0, file.indexOf(".jpeg"));
+                cards.add(new Card(name, file));
+                cards.add(new Card(name, file));
+            }
         }
 
         Collections.shuffle(cards);
@@ -153,9 +182,15 @@ public class GameController {
 
     private void checkMatch() {
         if (firstSelected.getCard().getName().equals(secondSelected.getCard().getName())) {
-            // ✅ match
+            // matched
             firstSelected.getCard().setMatched(true);
             secondSelected.getCard().setMatched(true);
+
+            // --- SKZ music feature ---
+            if (difficulty.equals("SKZ")) {
+                String musicPath = firstSelected.getCard().getMusicPath();
+                if (musicPath != null) { playMatchMusic(musicPath); }
+            }
 
             firstSelected = null;
             secondSelected = null;
@@ -163,7 +198,7 @@ public class GameController {
 
             if (pairsFound == totalPairs) { endGame(); }
         } else {
-            // ❌ no match → flip back after delay
+            // no match → flip back after delay
             Timeline delay = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
                 firstSelected.hide();
                 secondSelected.hide();
@@ -174,6 +209,24 @@ public class GameController {
         }
     }
 
+    // ----------------- Music on Match -----------------
+    private void playMatchMusic(String musicPath) {
+        // disable all cards during playback
+        for (CardButton btn : buttons) { btn.setDisable(true); }
+
+        Media sound = new Media(getClass().getResource(musicPath).toExternalForm());
+        MediaPlayer player = new MediaPlayer(sound);
+
+        player.setOnEndOfMedia(() -> {
+            // re-enable after song finishes
+            for (CardButton btn : buttons) {
+                if (!btn.getCard().isMatched()) { btn.setDisable(false); }
+            }
+        });
+
+        player.play();
+    }
+
     // ----------------- End Game -----------------
     private void endGame() {
         timer.stop();
@@ -182,7 +235,7 @@ public class GameController {
 
         Button playAgainBtn = new Button("Play Again");
         playAgainBtn.setOnAction(e -> {
-            GameController newGame = new GameController(rows, cols, stage);
+            GameController newGame = new GameController(rows, cols, difficulty, stage);
             stage.setScene(new Scene(newGame.getRoot(), 800, 600));
         });
 

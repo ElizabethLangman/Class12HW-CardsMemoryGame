@@ -42,25 +42,29 @@ public class StartScreen {
         ToggleButton easyBtn = new ToggleButton("Easy (3x4)");
         ToggleButton mediumBtn = new ToggleButton("Medium (4x6)");
         ToggleButton hardBtn = new ToggleButton("Hard (6x8)");
+        ToggleButton skzBtn = new ToggleButton("Surprize (SKZ)");
 
         // check this one
-        easyBtn.setMinWidth(120);
-        mediumBtn.setMinWidth(120);
-        hardBtn.setMinWidth(120);
+        easyBtn.setMinWidth(160);
+        mediumBtn.setMinWidth(160);
+        hardBtn.setMinWidth(160);
+        hardBtn.setMinWidth(160);
 
         ToggleGroup group = new ToggleGroup();
         easyBtn.setToggleGroup(group);
         mediumBtn.setToggleGroup(group);
         hardBtn.setToggleGroup(group);
-        mediumBtn.setSelected(true); // default
+        skzBtn.setToggleGroup(group);
+        easyBtn.setSelected(true); // default
 
         group.selectedToggleProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal == easyBtn) difficulty = "Easy";
             else if (newVal == mediumBtn) difficulty = "Medium";
             else if (newVal == hardBtn) difficulty = "Hard";
+            else if (newVal == skzBtn) difficulty = "SKZ";
         });
 
-        VBox menuBox = new VBox(15, easyBtn, mediumBtn, hardBtn);
+        VBox menuBox = new VBox(15, easyBtn, mediumBtn, hardBtn, skzBtn);
         menuBox.setAlignment(Pos.CENTER);
 
         // Start button
