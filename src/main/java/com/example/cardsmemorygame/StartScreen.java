@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 public class StartScreen {
     private final Stage stage;
     private final BorderPane root;
-    private String difficulty = "Medium"; // default
+    private String difficulty = "Easy"; // default
 
     public StartScreen(Stage stage) {
         this.stage = stage;

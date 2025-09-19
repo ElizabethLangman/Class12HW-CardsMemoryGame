@@ -127,7 +127,7 @@ public class GameController {
             );
 
             for (String file : albumToMusic.keySet()) {
-                String name = file.substring(0, file.indexOf(".jpg"));
+                String name = file.substring(0, file.indexOf(".png"));
                 Card albumCard = new Card(name, "/com/example/cardsmemorygame/albums/" + file);
                 albumCard.setMusicPath(albumToMusic.get(file));
 
