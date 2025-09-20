@@ -18,7 +18,7 @@ public class GameBoard {
         GameController controller = new GameController(rows, cols, difficulty, stage);
         root = controller.getRoot();
     }
- //hello
+
     public BorderPane getRoot() {
         return root;
     }
