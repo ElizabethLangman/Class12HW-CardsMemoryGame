@@ -4,6 +4,8 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.util.Objects;
+
 public class CardButton extends Button {
     private final Card card;
     private final Image backImage;
@@ -21,7 +23,7 @@ public class CardButton extends Button {
         } else {
             backImage = new Image(getClass().getResource("/com/example/cardsmemorygame/cards/back.jpeg").toExternalForm());
         }
-        frontImage = new Image(getClass().getResource(card.getImagePath()).toExternalForm());
+        frontImage = new Image(Objects.requireNonNull(getClass().getResource(card.getImagePath())).toExternalForm());
 
         // Create ImageViews with scaling
         backView = new ImageView(backImage);
