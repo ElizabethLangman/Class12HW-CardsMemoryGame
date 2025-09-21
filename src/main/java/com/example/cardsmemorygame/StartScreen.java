@@ -43,6 +43,7 @@ public class StartScreen {
         topBox.setAlignment(Pos.CENTER);
         topBox.setPadding(new Insets(10));
         root.setTop(topBox);
+        root.setStyle("-fx-background-color: white;");
 
         // Difficulty toggle buttons
         ToggleButton easyBtn = new ToggleButton("Easy (3x4)");
@@ -63,10 +64,15 @@ public class StartScreen {
         hardBtn.setStyle(style);
         skzBtn.setStyle(style);
 
-        easyBtn.setMinWidth(100);
-        mediumBtn.setMinWidth(100);
-        hardBtn.setMinWidth(100);
-        skzBtn.setMinWidth(100);
+        easyBtn.setMinSize(200, 50);
+        mediumBtn.setMinSize(200, 50);
+        hardBtn.setMinSize(200, 50);
+        skzBtn.setMinSize(200, 50);
+
+        easyBtn.setFont(Font.font("Times New Roman", 18));
+        mediumBtn.setFont(Font.font("Times New Roman", 18));
+        hardBtn.setFont(Font.font("Times New Roman", 18));
+        skzBtn.setFont(Font.font("Times New Roman", 18));
 
         // Prevent deselection
         group.selectedToggleProperty().addListener((obs, oldVal, newVal) -> {
@@ -84,7 +90,8 @@ public class StartScreen {
 
         // Start button
         Button startBtn = new Button("Start");
-        startBtn.setMinWidth(100);
+        startBtn.setMinSize(200, 50);
+        startBtn.setFont(Font.font("Times New Roman", 18));
         startBtn.setOnAction(e -> {
             ToggleButton selected = (ToggleButton) group.getSelectedToggle();
             if (selected == null) {
@@ -116,8 +123,7 @@ public class StartScreen {
 
     private void startGame() {
         GameBoard board = new GameBoard(difficulty, stage);
-        Scene gameScene = new Scene(board.getRoot(), 800, 600);
-        stage.setScene(gameScene);
+        stage.setScene(new Scene(board.getRoot(), 800, 600));
         stage.setMaximized(true);
     }
 }

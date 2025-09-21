@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -49,6 +50,7 @@ public class GameController {
         this.root = new BorderPane();
         this.grid = new GridPane();
         this.timerLabel = new Label("00:00.000");
+        root.setStyle("-fx-background-color: white;");
 
         setupTopBar();
         setupBoard(rows, cols);
@@ -89,22 +91,36 @@ public class GameController {
 
         double screenWidth = Screen.getPrimary().getBounds().getWidth();
         double screenHeight = Screen.getPrimary().getBounds().getHeight();
-        double cardWidth = (screenWidth - 100) / cols;
-        double cardHeight = (screenHeight - 300) / rows;
+        double cardWidth = 80; //120
+        double cardHeight = 120; //180
 
         int index = 0;
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
                 CardButton btn = new CardButton(cards.get(index));
                 btn.setOnAction(e -> handleCardClick(btn));
+                VBox gridWrapper = new VBox(grid);
+                gridWrapper.setAlignment(Pos.CENTER);
+                gridWrapper.setPadding(new Insets(20));
+                root.setCenter(gridWrapper);
 
                 btn.setPrefSize(cardWidth, cardHeight);
                 btn.setMinSize(cardWidth, cardHeight);
                 btn.setMaxSize(cardWidth, cardHeight);
+                btn.setStyle("-fx-padding: 0; -fx-background-color: transparent;");
+                btn.setOnMousePressed(e -> btn.setStyle("-fx-background-color: #e0e0e0;"));
+                btn.setOnMouseReleased(e -> btn.setStyle("-fx-background-color: transparent;"));
+
                 btn.getFrontView().setFitWidth(cardWidth);
                 btn.getFrontView().setFitHeight(cardHeight);
+                btn.getFrontView().setPreserveRatio(true);
+
                 btn.getBackView().setFitWidth(cardWidth);
                 btn.getBackView().setFitHeight(cardHeight);
+                btn.getBackView().setPreserveRatio(true);
+
+                GridPane.setHgrow(btn, Priority.NEVER);
+                GridPane.setVgrow(btn, Priority.NEVER);
 
                 buttons.add(btn);
                 grid.add(btn, c, r);
@@ -236,7 +252,10 @@ public class GameController {
         player.setOnReady(() -> player.play());
 
         //re-enable screen after the music ends
-        player.setOnEndOfMedia(() -> root.setDisable(false));
+        player.setOnEndOfMedia(() -> {
+            root.setDisable(false);
+            player.dispose();
+        });
 
         // Safety: also re-enable if there's an error
         player.setOnError(() -> {
