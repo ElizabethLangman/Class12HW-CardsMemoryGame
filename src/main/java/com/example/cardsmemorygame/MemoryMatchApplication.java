@@ -9,10 +9,12 @@ public class MemoryMatchApplication extends Application {
     @Override
     public void start(Stage primaryStage) {
         StartScreen startScreen = new StartScreen(primaryStage);
-        Scene scene = new Scene(startScreen.getRoot(), 600, 400);
+        Scene scene = new Scene(startScreen.getRoot(), 800, 600);
 
+        scene.getRoot().requestFocus(); //prevent initial button
         primaryStage.setTitle("Memory Card Game");
         primaryStage.setScene(scene);
+        primaryStage.setMaximized(true); //full screen
         primaryStage.show();
     }
 

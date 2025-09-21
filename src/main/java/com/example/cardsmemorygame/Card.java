@@ -13,7 +13,7 @@ public class Card {
 
     public Card(String name, String imageFile, String musicPath) {
         this.name = name;
-        this.imagePath = "/com/example/cardsmemorygame/cards/" + imageFile;
+        this.imagePath = "/com/example/cardsmemorygame/albums/" + imageFile;
         this.musicPath = musicPath;
     }
 
@@ -26,6 +26,4 @@ public class Card {
     public void setMatched(boolean matched) { this.matched = matched; }
 
     public String getMusicPath() { return musicPath; }
-
-    public void setMusicPath(String musicPath) { this.musicPath = musicPath; }
 }

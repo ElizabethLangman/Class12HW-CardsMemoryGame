@@ -8,8 +8,6 @@ import java.util.Objects;
 
 public class CardButton extends Button {
     private final Card card;
-    private final Image backImage;
-    private final Image frontImage;
     private final ImageView backView;
     private final ImageView frontView;
     private boolean revealed = false;
@@ -18,12 +16,13 @@ public class CardButton extends Button {
         this.card = card;
 
         // Load images
+        Image backImage;
         if (card.getName().startsWith("SKZ_")){
             backImage = new Image(getClass().getResource("/com/example/cardsmemorygame/albums/SKZ_back.png").toExternalForm());
         } else {
             backImage = new Image(getClass().getResource("/com/example/cardsmemorygame/cards/back.jpeg").toExternalForm());
         }
-        frontImage = new Image(Objects.requireNonNull(getClass().getResource(card.getImagePath())).toExternalForm());
+        Image frontImage = new Image(Objects.requireNonNull(getClass().getResource(card.getImagePath())).toExternalForm());
 
         // Create ImageViews with scaling
         backView = new ImageView(backImage);
@@ -41,6 +40,8 @@ public class CardButton extends Button {
         // Default look = back of card
         setGraphic(backView);
         setPrefSize(80, 120);
+        setMaxSize(80, 120);
+        setMinSize(80, 120);
     }
 
     public void reveal() {

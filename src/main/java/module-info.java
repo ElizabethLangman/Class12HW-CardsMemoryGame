@@ -6,6 +6,7 @@ module com.example.cardsmemorygame {
     requires org.kordamp.ikonli.javafx;
     requires java.desktop;
     requires javafx.media;
+    requires javafx.graphics;
 
     opens com.example.cardsmemorygame to javafx.fxml;
     exports com.example.cardsmemorygame;

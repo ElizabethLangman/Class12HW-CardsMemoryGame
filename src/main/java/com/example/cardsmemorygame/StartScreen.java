@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
@@ -16,7 +17,7 @@ import javafx.stage.Stage;
 public class StartScreen {
     private final Stage stage;
     private final BorderPane root;
-    private String difficulty = "Easy"; // default
+    private String difficulty;
 
     public StartScreen(Stage stage) {
         this.stage = stage;
@@ -31,12 +32,17 @@ public class StartScreen {
     private void setupUI() {
         Image logoImg = new Image(getClass().getResource("/com/example/cardsmemorygame/logo.jpeg").toExternalForm());
         ImageView logoView = new ImageView(logoImg);
-        logoView.setFitWidth(200);
+        logoView.setFitWidth(1500);
         logoView.setPreserveRatio(true);
+
         Text title = new Text("New Game");
-        title.setFont(Font.font("Times New Roman", 32));
-        BorderPane.setAlignment(title, Pos.CENTER);
-        root.setTop(title);
+        title.setFont(Font.font("Times New Roman", 64));
+        title.setStyle("-fx-text-alignment: center;");
+
+        VBox topBox = new VBox(30, logoView, title);
+        topBox.setAlignment(Pos.CENTER);
+        topBox.setPadding(new Insets(10));
+        root.setTop(topBox);
 
         // Difficulty toggle buttons
         ToggleButton easyBtn = new ToggleButton("Easy (3x4)");
@@ -44,24 +50,33 @@ public class StartScreen {
         ToggleButton hardBtn = new ToggleButton("Hard (6x8)");
         ToggleButton skzBtn = new ToggleButton("Surprize (SKZ)");
 
-        // check this one
-        easyBtn.setMinWidth(160);
-        mediumBtn.setMinWidth(160);
-        hardBtn.setMinWidth(160);
-        hardBtn.setMinWidth(160);
-
         ToggleGroup group = new ToggleGroup();
         easyBtn.setToggleGroup(group);
         mediumBtn.setToggleGroup(group);
         hardBtn.setToggleGroup(group);
         skzBtn.setToggleGroup(group);
-        easyBtn.setSelected(true); // default
 
+        // Style buttons
+        String style = "-fx-background-color: #006400; -fx-text-fill: white;";
+        easyBtn.setStyle(style);
+        mediumBtn.setStyle(style);
+        hardBtn.setStyle(style);
+        skzBtn.setStyle(style);
+
+        easyBtn.setMinWidth(100);
+        mediumBtn.setMinWidth(100);
+        hardBtn.setMinWidth(100);
+        skzBtn.setMinWidth(100);
+
+        // Prevent deselection
         group.selectedToggleProperty().addListener((obs, oldVal, newVal) -> {
-            if (newVal == easyBtn) difficulty = "Easy";
-            else if (newVal == mediumBtn) difficulty = "Medium";
-            else if (newVal == hardBtn) difficulty = "Hard";
-            else if (newVal == skzBtn) difficulty = "SKZ";
+            if (newVal == null && oldVal != null) oldVal.setSelected(true);
+            else {
+                if (newVal == easyBtn) difficulty = "Easy";
+                else if (newVal == mediumBtn) difficulty = "Medium";
+                else if (newVal == hardBtn) difficulty = "Hard";
+                else if (newVal == skzBtn) difficulty = "SKZ";
+            }
         });
 
         VBox menuBox = new VBox(15, easyBtn, mediumBtn, hardBtn, skzBtn);
@@ -69,12 +84,33 @@ public class StartScreen {
 
         // Start button
         Button startBtn = new Button("Start");
-        startBtn.setOnAction(e -> startGame());
+        startBtn.setMinWidth(100);
+        startBtn.setOnAction(e -> {
+            ToggleButton selected = (ToggleButton) group.getSelectedToggle();
+            if (selected == null) {
+                // Show warning or disable start
+                System.out.println("Please select a difficulty.");
+                return;
+            }
+
+            if (selected == easyBtn) difficulty = "Easy";
+            else if (selected == mediumBtn) difficulty = "Medium";
+            else if (selected == hardBtn) difficulty = "Hard";
+            else if (selected == skzBtn) difficulty = "SKZ";
+
+            startGame();
+        });
 
         VBox centerBox = new VBox(25, menuBox, startBtn);
         centerBox.setAlignment(Pos.CENTER);
-
         root.setCenter(centerBox);
+
+        // Footer
+        Label footer = new Label("© 2025 Elizabeth L. Langman. All rights reserved.");
+        footer.setStyle("-fx-font-size: 12px; -fx-text-fill: gray;");
+        BorderPane.setAlignment(footer, Pos.CENTER);
+        root.setBottom(footer);
+
         root.setPadding(new Insets(20));
     }
 
@@ -82,5 +118,6 @@ public class StartScreen {
         GameBoard board = new GameBoard(difficulty, stage);
         Scene gameScene = new Scene(board.getRoot(), 800, 600);
         stage.setScene(gameScene);
+        stage.setMaximized(true);
     }
 }
