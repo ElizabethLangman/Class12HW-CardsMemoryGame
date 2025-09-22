@@ -79,17 +79,39 @@ public class GameController {
 
     // ----------------- Board Setup -----------------
     private void setupBoard(int rows, int cols) {
+        double cardWidth;
+        double cardHeight;
+
+        switch (difficulty) {
+            case "Easy" -> {
+                cardWidth = 140;
+                cardHeight = 200;
+            }
+            case "Medium" -> {
+                cardWidth = 100;
+                cardHeight = 150;
+            }
+            case "Hard" -> {
+                cardWidth = 80;
+                cardHeight = 110;
+            }
+            case "SKZ" -> {
+                cardWidth = 150;
+                cardHeight = 150;
+            }
+            default -> {
+                cardWidth = 100;
+                cardHeight = 140;
+            }
+        }
+
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setAlignment(Pos.CENTER);
-
         totalPairs = (rows * cols) / 2;
 
         List<Card> cards = generateCards(totalPairs);
         Collections.shuffle(cards);
-
-        double cardWidth = 80; //120
-        double cardHeight = 120; //180
 
         VBox gridWrapper = new VBox(grid);
         gridWrapper.setAlignment(Pos.CENTER);
