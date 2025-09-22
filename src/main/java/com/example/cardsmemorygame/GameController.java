@@ -15,6 +15,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -35,6 +36,7 @@ public class GameController {
     private int pairsFound = 0;
     private int totalPairs;
 
+    private MediaPlayer currentPlayer;
     private Timeline timer;
     private double elapsedTime = 0;
 
@@ -94,15 +96,16 @@ public class GameController {
         double cardWidth = 80; //120
         double cardHeight = 120; //180
 
+        VBox gridWrapper = new VBox(grid);
+        gridWrapper.setAlignment(Pos.CENTER);
+        gridWrapper.setPadding(new Insets(20));
+        root.setCenter(gridWrapper);
+
         int index = 0;
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
                 CardButton btn = new CardButton(cards.get(index));
                 btn.setOnAction(e -> handleCardClick(btn));
-                VBox gridWrapper = new VBox(grid);
-                gridWrapper.setAlignment(Pos.CENTER);
-                gridWrapper.setPadding(new Insets(20));
-                root.setCenter(gridWrapper);
 
                 btn.setPrefSize(cardWidth, cardHeight);
                 btn.setMinSize(cardWidth, cardHeight);
@@ -153,7 +156,7 @@ public class GameController {
                     "SKZ_ATE.png", "/com/example/cardsmemorygame/albums/music/CHK_CHK_BOOM.mp3",
                     "SKZ_CEREMONY.png", "/com/example/cardsmemorygame/albums/music/CEREMONY.mp3",
                     "SKZ_HOLLOW.png", "/com/example/cardsmemorygame/albums/music/HOLLOW.mp3",
-                    "SKZ_HOP.png", "/com/example/cardsmemorygame/albums/music/WALKING_ON_WATER.mp3",
+                    "SKZ_HOP.png", "/com/example/cardsmemorygame/albums/music/WALKIN_ON_WATER.mp3",
                     "SKZ_IN_LIFE.png", "/com/example/cardsmemorygame/albums/music/BACK_DOOR.mp3",
                     "SKZ_KARMA.png", "/com/example/cardsmemorygame/albums/music/BLEEP.mp3",
                     "SKZ_MAXIDENT.png", "/com/example/cardsmemorygame/albums/music/CIRCUS.mp3",
@@ -186,8 +189,7 @@ public class GameController {
             timerLabel.setText(formatTime(elapsedTime));
         }));
         timer.setCycleCount(Timeline.INDEFINITE);
-        //maybe delete
-        //timer.play();
+        timer.play();
     }
 
     private String formatTime(double timeSeconds) {
@@ -246,21 +248,23 @@ public class GameController {
         root.setDisable(true);
 
         Media sound = new Media(Objects.requireNonNull(getClass().getResource(musicPath)).toExternalForm());
-        MediaPlayer player = new MediaPlayer(sound);
+        currentPlayer = new MediaPlayer(sound);
 
         // wait until media is fully loaded before playing
-        player.setOnReady(() -> player.play());
+        currentPlayer.setOnReady(() -> currentPlayer.play());
 
         //re-enable screen after the music ends
-        player.setOnEndOfMedia(() -> {
+        currentPlayer.setOnEndOfMedia(() -> {
             root.setDisable(false);
-            player.dispose();
+            currentPlayer.dispose();
+            currentPlayer = null;
         });
 
         // Safety: also re-enable if there's an error
-        player.setOnError(() -> {
-            System.err.println("Error playing music: " + player.getError());
+        currentPlayer.setOnError(() -> {
+            System.err.println("Error playing music: " + currentPlayer.getError());
             root.setDisable(false);
+            currentPlayer = null;
         });
     }
 
@@ -272,20 +276,31 @@ public class GameController {
         resultLabel.setFont(javafx.scene.text.Font.font("Times New Roman", 24));
 
         Button playAgainBtn = new Button("Play Again");
-        playAgainBtn.setMinWidth(200);
+        playAgainBtn.setStyle("-fx-background-color: #006400; -fx-text-fill: white;");
+        playAgainBtn.setFont(Font.font("Times New Roman", 18));
+        playAgainBtn.setMinWidth(180);
         playAgainBtn.setOnAction(e -> {
             GameController newGame = new GameController(rows, cols, difficulty, stage);
             stage.setScene(new Scene(newGame.getRoot(), Screen.getPrimary().getBounds().getWidth(), Screen.getPrimary().getBounds().getHeight()));
         });
 
         Button backBtn = new Button("Back to Main Menu");
-        backBtn.setMinWidth(200);
+        backBtn.setStyle("-fx-background-color: #006400; -fx-text-fill: white;");
+        backBtn.setFont(Font.font("Times New Roman", 18));
+        backBtn.setMinWidth(180);
         backBtn.setOnAction(e -> {
             StartScreen startScreen = new StartScreen(stage);
             stage.setScene(new Scene(startScreen.getRoot(), 800, 600));
+            stage.setMaximized(true);
         });
 
-        VBox endBox = new VBox(15, resultLabel, playAgainBtn, backBtn);
+        Label footer = new Label(difficulty.equals("SKZ") ?
+                "© Content credit to Stray Kids" :
+                "© 2025 Elizabeth L. Langman. All rights reserved.");
+        footer.setStyle("-fx-font-size: 12px; -fx-text-fill: gray;");
+        footer.setAlignment(Pos.CENTER);
+
+        VBox endBox = new VBox(15, resultLabel, playAgainBtn, backBtn, footer);
         endBox.setStyle("-fx-alignment: center; -fx-padding: 20;");
         endBox.setAlignment(Pos.CENTER);
         root.setBottom(endBox);
@@ -294,9 +309,12 @@ public class GameController {
     // ----------------- Back to Menu -----------------
     private void setupBottomBar() {
         Button backBtn = new Button("Back to Main Menu");
+        backBtn.setFont(Font.font("Times New Roman", 18));
+        backBtn.setMinWidth(180);
         backBtn.setOnAction(e -> {
             StartScreen startScreen = new StartScreen(stage);
             stage.setScene(new Scene(startScreen.getRoot(), 800, 600));
+            stage.setMaximized(true);
         });
 
         Label footer = new Label(difficulty.equals("SKZ") ?

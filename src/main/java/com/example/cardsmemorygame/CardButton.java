@@ -56,15 +56,9 @@ public class CardButton extends Button {
         revealed = false;
     }
 
-    public Card getCard() {
-        return card;
-    }
+    public Card getCard() { return card; }
 
-    public ImageView getFrontView() {
-        return frontView;
-    }
+    public ImageView getFrontView() { return frontView; }
 
-    public ImageView getBackView() {
-        return backView;
-    }
+    public ImageView getBackView() { return backView; }
 }

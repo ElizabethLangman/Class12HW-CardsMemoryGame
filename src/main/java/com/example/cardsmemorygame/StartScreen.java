@@ -58,11 +58,13 @@ public class StartScreen {
         skzBtn.setToggleGroup(group);
 
         // Style buttons
-        String style = "-fx-background-color: #006400; -fx-text-fill: white;";
-        easyBtn.setStyle(style);
-        mediumBtn.setStyle(style);
-        hardBtn.setStyle(style);
-        skzBtn.setStyle(style);
+        String defaultStyle = "-fx-background-color: #006400; -fx-text-fill: white;";
+        String selectedStyle = "-fx-background-color: #228B22; -fx-text-fill: white;";
+
+        easyBtn.setStyle(defaultStyle);
+        mediumBtn.setStyle(defaultStyle);
+        hardBtn.setStyle(defaultStyle);
+        skzBtn.setStyle(defaultStyle);
 
         easyBtn.setMinSize(200, 50);
         mediumBtn.setMinSize(200, 50);
@@ -83,6 +85,16 @@ public class StartScreen {
                 else if (newVal == hardBtn) difficulty = "Hard";
                 else if (newVal == skzBtn) difficulty = "SKZ";
             }
+        });
+
+        group.selectedToggleProperty().addListener((obs, oldVal, newVal) -> {
+            if (oldVal != null) ((ToggleButton) oldVal).setStyle(defaultStyle);
+            if (newVal != null) ((ToggleButton) newVal).setStyle(selectedStyle);
+
+            if (newVal == easyBtn) difficulty = "Easy";
+            else if (newVal == mediumBtn) difficulty = "Medium";
+            else if (newVal == hardBtn) difficulty = "Hard";
+            else if (newVal == skzBtn) difficulty = "SKZ";
         });
 
         VBox menuBox = new VBox(15, easyBtn, mediumBtn, hardBtn, skzBtn);
