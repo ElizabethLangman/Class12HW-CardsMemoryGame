@@ -1,4 +1,6 @@
 package com.example.cardsmemorygame;
+import javafx.scene.image.Image;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -24,5 +26,16 @@ public class CardLoader {
         List<String> allCards = loadCardFilenames();
         Collections.shuffle(allCards);
         return allCards.subList(0, count);
+    }
+
+    public static void preloadImages() {
+        for (String filename : loadCardFilenames()) {
+            String path = "/com/example/cardsmemorygame/cards/" + filename;
+            try {
+                new Image(CardLoader.class.getResource(path).toExternalForm());
+            } catch (Exception e) {
+                System.err.println("Failed to preload: " + path);
+            }
+        }
     }
 }

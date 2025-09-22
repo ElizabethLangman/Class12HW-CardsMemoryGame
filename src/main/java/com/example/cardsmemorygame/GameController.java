@@ -91,8 +91,6 @@ public class GameController {
         List<Card> cards = generateCards(totalPairs);
         Collections.shuffle(cards);
 
-        double screenWidth = Screen.getPrimary().getBounds().getWidth();
-        double screenHeight = Screen.getPrimary().getBounds().getHeight();
         double cardWidth = 80; //120
         double cardHeight = 120; //180
 
@@ -246,6 +244,7 @@ public class GameController {
     private void playMatchMusic(String musicPath) {
         // disable all input during music
         root.setDisable(true);
+        timer.pause();
 
         Media sound = new Media(Objects.requireNonNull(getClass().getResource(musicPath)).toExternalForm());
         currentPlayer = new MediaPlayer(sound);
@@ -256,6 +255,7 @@ public class GameController {
         //re-enable screen after the music ends
         currentPlayer.setOnEndOfMedia(() -> {
             root.setDisable(false);
+            if (pairsFound < totalPairs) timer.play(); //resume timer
             currentPlayer.dispose();
             currentPlayer = null;
         });
@@ -264,6 +264,7 @@ public class GameController {
         currentPlayer.setOnError(() -> {
             System.err.println("Error playing music: " + currentPlayer.getError());
             root.setDisable(false);
+            if (pairsFound < totalPairs) timer.play();
             currentPlayer = null;
         });
     }
@@ -297,7 +298,7 @@ public class GameController {
         Label footer = new Label(difficulty.equals("SKZ") ?
                 "© Content credit to Stray Kids" :
                 "© 2025 Elizabeth L. Langman. All rights reserved.");
-        footer.setStyle("-fx-font-size: 12px; -fx-text-fill: gray;");
+        footer.setStyle("-fx-font-size: 18px; -fx-text-fill: gray;");
         footer.setAlignment(Pos.CENTER);
 
         VBox endBox = new VBox(15, resultLabel, playAgainBtn, backBtn, footer);
@@ -320,7 +321,7 @@ public class GameController {
         Label footer = new Label(difficulty.equals("SKZ") ?
                 "© Content credit to Stray Kids" :
                 "© 2025 Elizabeth L. Langman. All rights reserved.");
-        footer.setStyle("-fx-font-size: 12px; -fx-text-fill: gray;");
+        footer.setStyle("-fx-font-size: 18px; -fx-text-fill: gray;");
         footer.setAlignment(Pos.CENTER);
 
         VBox bottomBox = new VBox(10, backBtn, footer);

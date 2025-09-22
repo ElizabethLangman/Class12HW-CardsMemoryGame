@@ -16,6 +16,8 @@ public class MemoryMatchApplication extends Application {
         primaryStage.setScene(scene);
         primaryStage.setMaximized(true); //full screen
         primaryStage.show();
+
+        CardLoader.preloadImages();
     }
 
     public static void main(String[] args) {

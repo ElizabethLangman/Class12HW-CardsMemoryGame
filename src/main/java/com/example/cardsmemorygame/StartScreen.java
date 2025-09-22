@@ -104,6 +104,8 @@ public class StartScreen {
         Button startBtn = new Button("Start");
         startBtn.setMinSize(200, 50);
         startBtn.setFont(Font.font("Times New Roman", 18));
+        startBtn.setOnMousePressed(e -> startBtn.setStyle("-fx-background-color: #228B22;"));
+        startBtn.setOnMouseReleased(e -> startBtn.setStyle("-fx-background-color: #006400;"));
         startBtn.setOnAction(e -> {
             ToggleButton selected = (ToggleButton) group.getSelectedToggle();
             if (selected == null) {
@@ -126,7 +128,7 @@ public class StartScreen {
 
         // Footer
         Label footer = new Label("© 2025 Elizabeth L. Langman. All rights reserved.");
-        footer.setStyle("-fx-font-size: 12px; -fx-text-fill: gray;");
+        footer.setStyle("-fx-font-size: 18px; -fx-text-fill: gray;");
         BorderPane.setAlignment(footer, Pos.CENTER);
         root.setBottom(footer);
 
