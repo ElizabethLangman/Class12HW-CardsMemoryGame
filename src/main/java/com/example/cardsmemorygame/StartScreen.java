@@ -58,8 +58,8 @@ public class StartScreen {
         skzBtn.setToggleGroup(group);
 
         // Style buttons
-        String defaultStyle = "-fx-background-color: #006400; -fx-text-fill: white;";
-        String selectedStyle = "-fx-background-color: #228B22; -fx-text-fill: white;";
+        String defaultStyle = "-fx-background-color: #426B1F; -fx-text-fill: white;";
+        String selectedStyle = "-fx-background-color: #C1D8AD; -fx-text-fill: white;";
 
         easyBtn.setStyle(defaultStyle);
         mediumBtn.setStyle(defaultStyle);
@@ -104,7 +104,7 @@ public class StartScreen {
         Button startBtn = new Button("Start");
         startBtn.setMinSize(200, 50);
         startBtn.setFont(Font.font("Times New Roman", 18));
-        startBtn.setOnMousePressed(e -> startBtn.setStyle("-fx-background-color: #228B22;"));
+        startBtn.setOnMousePressed(e -> startBtn.setStyle("-fx-background-color: #C1D8AD;"));
         startBtn.setOnMouseReleased(e -> startBtn.setStyle("-fx-background-color: #006400;"));
         startBtn.setOnAction(e -> {
             ToggleButton selected = (ToggleButton) group.getSelectedToggle();

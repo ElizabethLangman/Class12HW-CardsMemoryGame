@@ -173,7 +173,7 @@ public class GameController {
                     "SKZ_ATE.png", "/com/example/cardsmemorygame/albums/music/CHK_CHK_BOOM.mp3",
                     "SKZ_CEREMONY.png", "/com/example/cardsmemorygame/albums/music/CEREMONY.mp3",
                     "SKZ_HOLLOW.png", "/com/example/cardsmemorygame/albums/music/HOLLOW.mp3",
-                    "SKZ_HOP.png", "/com/example/cardsmemorygame/albums/music/WALKIN_ON_WATER.mp3",
+                    "SKZ_HOP.png", "/com/example/cardsmemorygame/albums/music/WALKING_ON_WATER.mp3",
                     "SKZ_IN_LIFE.png", "/com/example/cardsmemorygame/albums/music/BACK_DOOR.mp3",
                     "SKZ_KARMA.png", "/com/example/cardsmemorygame/albums/music/BLEEP.mp3",
                     "SKZ_MAXIDENT.png", "/com/example/cardsmemorygame/albums/music/CIRCUS.mp3",
@@ -296,7 +296,7 @@ public class GameController {
         resultLabel.setFont(javafx.scene.text.Font.font("Times New Roman", 24));
 
         Button playAgainBtn = new Button("Play Again");
-        playAgainBtn.setStyle("-fx-background-color: #006400; -fx-text-fill: white;");
+        playAgainBtn.setStyle("-fx-background-color: #426B1F; -fx-text-fill: white;");
         playAgainBtn.setFont(Font.font("Times New Roman", 18));
         playAgainBtn.setMinWidth(180);
         playAgainBtn.setOnAction(e -> {
@@ -305,7 +305,7 @@ public class GameController {
         });
 
         Button backBtn = new Button("Back to Main Menu");
-        backBtn.setStyle("-fx-background-color: #006400; -fx-text-fill: white;");
+        backBtn.setStyle("-fx-background-color: #426B1F; -fx-text-fill: white;");
         backBtn.setFont(Font.font("Times New Roman", 18));
         backBtn.setMinWidth(180);
         backBtn.setOnAction(e -> {
