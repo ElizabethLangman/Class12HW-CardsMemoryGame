@@ -17,7 +17,7 @@ public class CardButton extends Button {
 
         // Load images
         Image backImage;
-        if (card.getName().startsWith("SKZ_")){
+        if (card.getName().startsWith("SKZ_")) {
             backImage = new Image(getClass().getResource("/com/example/cardsmemorygame/albums/SKZ_back.png").toExternalForm());
         } else {
             backImage = new Image(getClass().getResource("/com/example/cardsmemorygame/cards/back.jpeg").toExternalForm());
